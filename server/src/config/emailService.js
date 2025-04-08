@@ -61,20 +61,20 @@ export const sendMail = async ({
         `Failed to connect to email service: ${error.message}`
       );
     });
-    //send email 
+    //send email
     const info = await transporter.sendMail({
-        from: "Instashots",
-        to: to,
-        subject: subject,
-        html: emailBody,
+      from: "Instashots",
+      to: to,
+      subject: subject,
+      html: emailBody,
     });
     return {
-        success: true,
-        message: "Email sent successfully",
-        messageId: info.messageId,
-    }
+      success: true,
+      message: "Email sent successfully",
+      messageId: info.messageId,
+    };
   } catch (error) {
-    console.error("Email service error", error)
-    throw createHttpError(500, "Failed to send email. Try again")
+    console.error("Email service error", error);
+    throw createHttpError(500, "Failed to send email. Try again");
   }
 };

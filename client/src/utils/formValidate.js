@@ -7,10 +7,10 @@ export const validateEmail = (email) => {
   }
 };
 
-export const validatePassword = (password) => {
-  const validRegex = /^(?=.[a-z])(?=.[A-Z]).{5,}$/;
+export const validatePassword = (password, msg) => {
+  const validRegex = /^(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
   if (!password) {
-    return "Password is required";
+    return msg;
   } else if (!validRegex.test(password)) {
     return "Password must contain at least one lowercase, uppercase, and at least 5 characters long";
   }

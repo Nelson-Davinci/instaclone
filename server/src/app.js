@@ -1,10 +1,20 @@
 import express, { json } from "express"; //middleware in express i.e json
 import createHttpError, { isHttpError } from "http-errors";
+import cors from "cors"; //for handling cross-origin requests
+import morgan from "morgan"; //for logging requests
 
 // import routes
 import userRoutes from "./routes/user.js";
 
 const app = express();
+const corsOptions = {
+  origin: ["http://localhost:4600", "https://instaclone-orcin.vercel.app"],
+  optionsSuccessStatus: 200,
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+  credentials: true,
+};
+app.use(cors(corsOptions)); //for handling cross-origin requests i.e allows external origins to access our api or communicate with server
+app.use(morgan("dev")); //logging requests to the console
 app.use(json({ limit: "25mb" })); //parses requests to client side in json body format
 app.use(express.urlencoded({ extended: true }));
 app.disable("x-powered-by");
