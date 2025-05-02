@@ -4,8 +4,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import MetaArgs from "../../components/MetaArgs";
 import { loginUser } from "../../api/auth";
+import { toast } from "sonner";
+import handleError from "../../utils/handleError";
+import { useAuth } from "../../store";
 
-export default function Register() {
+export default function Login() {
+  const { setAccessToken } = useAuth();
   const [revealPassword, setRevealPassword] = useState(false);
   const {
     register,
@@ -23,12 +27,12 @@ export default function Register() {
   const onSubmit = async (data) => {
     try {
       const res = await loginUser(data);
-      if (res.status !== 200) {
+      if (res.status === 200) {
         toast.success(res.data.message);
         setAccessToken(res.data.accessToken);
-        navigate("/home");
-    } 
-    }catch (error) {
+        navigate("/");
+      }
+    } catch (error) {
       handleError(error);
     }
   };
@@ -66,27 +70,27 @@ export default function Register() {
               )}
             </label>
           </div>
-            <div className="mb-4 relative">
-              <label className="floating-label">
-                <span>Password</span>
-                <input
-                  type={revealPassword ? "text" : "password"} // Toggle password visibility
-                  placeholder="Password"
-                  className="input input-lg w-full"
-                  id="password"
-                  {...register("password", {
-                    validate: (value) => validatePassword(value, "Password is required"),
-                  })}
-                />
-              </label>
-              <button
-                className="absolute inset-y-0 right-2"
-                onClick={togglePassword}
-                type="button"
-              >
-                {revealPassword ? "Hide" : "Show"}
-              </button>
-            </div>
+          <div className="mb-4 relative">
+            <label className="floating-label">
+              <span>Password</span>
+              <input
+                type={revealPassword ? "text" : "password"} // Toggle password visibility
+                placeholder="Password"
+                className="input input-lg w-full"
+                id="password"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+              />
+            </label>
+            <button
+              className="absolute inset-y-0 right-2"
+              onClick={togglePassword}
+              type="button"
+            >
+              {revealPassword ? "Hide" : "Show"}
+            </button>
+          </div>
 
           <button
             type="submit"

@@ -5,21 +5,23 @@ import Login from "../pages/login/Login";
 import { LazySpinner } from "../components/Spinner";
 import Home from "../pages/home/Home";
 import { useAuth } from "../store";
-import { PrivateRoutes,VerifyRoutes, PublicRoutes  } from "./ProtectedRoutes";
+import { PrivateRoutes, VerifyRoutes, PublicRoutes } from "./ProtectedRoutes";
 import SendVerifyMail from "../pages/verifyAccount/SendVerifyMail";
 import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
-import VerifyAccount from "../pages/verifyAccount/SendVerifyMail";
+import VerifyAccount from "../pages/verifyAccount/VerifyAccount";
 import ResetPassword from "../pages/forgotPassword/ResetPassword";
-// import Explore from "../pages/explore/Explore";
-
+import PostsProvider from "../store/PostsProvider";
+import Explore from "../pages/explore/Explore";
+import Comments from "../pages/comments/Comments";
 
 const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
-const RootLayout = lazy(() => import("../layouts/RootLayout"))
-const VerifyAccountLayout = lazy(() => import("../layouts/VerifyAccountLayout"))
-
+const RootLayout = lazy(() => import("../layouts/RootLayout"));
+const VerifyAccountLayout = lazy(() =>
+  import("../layouts/VerifyAccountLayout")
+);
 
 export default function AppRoutes() {
-  const {accessToken, isCheckingAuth, user} = useAuth();
+  const { accessToken, isCheckingAuth, user } = useAuth();
   if (isCheckingAuth) {
     return <LazySpinner />;
   }
@@ -28,8 +30,9 @@ export default function AppRoutes() {
       path: "auth",
       element: (
         <Suspense fallback={<LazySpinner />}>
-          <PublicRoutes accessToken={accessToken}/>
-          <AuthLayout />
+          <PublicRoutes accessToken={accessToken}>
+            <AuthLayout />
+          </PublicRoutes>
         </Suspense>
       ),
       children: [
@@ -48,28 +51,34 @@ export default function AppRoutes() {
         {
           path: "reset-password/:userId/:passwordToken",
           element: <ResetPassword />,
-
-        }
+        },
       ],
     },
     {
       path: "/",
       element: (
         <Suspense fallback={<LazySpinner />}>
-          <PrivateRoutes accessToken={accessToken} user={user}/>
-          <RootLayout />
+          <PrivateRoutes accessToken={accessToken} user={user}>
+            <PostsProvider>
+              <RootLayout />
+            </PostsProvider>
+          </PrivateRoutes>
         </Suspense>
       ),
       children: [
         {
           index: true,
-          element: <Home />
-        }, 
-        // {
-        //   path: "explore",
-        //   element: <Explore />
-        // }
-      ]
+          element: <Home />,
+        },
+        {
+          path: "explore",
+          element: <Explore />,
+        },
+        {
+          path: "post/:id",
+          element: <Comments />
+        },
+      ],
     },
     {
       element: (
@@ -86,11 +95,10 @@ export default function AppRoutes() {
         },
         {
           path: "verify-email/:userId/:verificationToken",
-          element: <VerifyAccount />
-        }
-      ]
-    }
-    
+          element: <VerifyAccount />,
+        },
+      ],
+    },
   ];
   const router = createBrowserRouter(routes);
   return <RouterProvider router={router} />;

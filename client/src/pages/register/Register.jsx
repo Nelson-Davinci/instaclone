@@ -2,12 +2,17 @@ import { Link, useNavigate } from "react-router";
 import logo from "../../assets/logo.png";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { validateEmail, validatePassword, validateUsername, validateFullname } from "../../utils/formValidate";
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+  validateFullname,
+} from "../../utils/formValidate";
 import MetaArgs from "../../components/MetaArgs";
 import { registerUser } from "../../api/auth";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import { useAuth } from "../../store";
-import handleError from "../../utils/handleError";  
+import handleError from "../../utils/handleError";
 
 export default function Register() {
   const [revealPassword, setRevealPassword] = useState(false);
@@ -16,7 +21,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  const {setAccessToken} = useAuth();
+  const { setAccessToken } = useAuth();
 
   const togglePassword = () => {
     setRevealPassword((prev) => !prev);
@@ -33,13 +38,19 @@ export default function Register() {
     } catch (error) {
       handleError(error);
     }
-  }
+  };
 
   return (
     <>
-      <MetaArgs title="Sign up to InstaShots" content="Get access to InstaShots" />
+      <MetaArgs
+        title="Sign up to InstaShots"
+        content="Get access to InstaShots"
+      />
       <div>
-        <form className="w-[90vw] md:w-[400px] border rounded-md border-[#A1A1A1] py-[40px] px-[28px] mb-10" onhandleSubmit={handleSubmit(onFormSubmit)}>
+        <form
+          className="w-[90vw] md:w-[400px] border rounded-md border-[#A1A1A1] py-[40px] px-[28px] mb-10"
+          onSubmit={handleSubmit(onFormSubmit)}
+        >
           <div className="flex justify-center mb-10">
             <Link to="/">
               <img src={logo} className="text-center" />
@@ -106,7 +117,8 @@ export default function Register() {
                 className="input input-lg w-full"
                 id="password"
                 {...register("password", {
-                  validate: (value) => validatePassword(value, "Password is required"),
+                  validate: (value) =>
+                    validatePassword(value, "Password is required"),
                 })}
               />
             </label>

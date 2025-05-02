@@ -77,4 +77,11 @@ const userSchema = new Schema(
 
 const User = model("User", userSchema);
 
+// In your User model
+userSchema.pre('remove', async function(next) {
+  // Delete all user's posts when account is deleted
+  await Post.deleteMany({ userId: this._id });
+  next();
+});
+
 export default User;

@@ -2,9 +2,10 @@ import express, { json } from "express"; //middleware in express i.e json
 import createHttpError, { isHttpError } from "http-errors";
 import cors from "cors"; //for handling cross-origin requests
 import morgan from "morgan"; //for logging requests
-
+import postRoutes from "./routes/post.js"; //importing our post routes
 // import routes
 import userRoutes from "./routes/user.js";
+import commentRoutes from "./routes/comment.js";
 
 const app = express();
 const corsOptions = {
@@ -21,6 +22,8 @@ app.disable("x-powered-by");
 
 // api
 app.use("/api/auth", userRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/comments", commentRoutes);
 
 // handle route errors
 app.use((req, res, next) => {

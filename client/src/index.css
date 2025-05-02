@@ -1,4 +1,61 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-   themes: light --default;
- }
+  themes: light --default;
+}
+
+@theme {
+  --font-rubik: "Rubik Variable",ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  font-family: var(--font-rubik);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-enter {
+  opacity: 1;
+  transform: scale(0.95);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in, transform 500ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in, transform 500ms ease-in,
+    filter 300ms ease-in;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  filter: blur(5px);
+  transform: scale(0.95);
+  transition: opacity 300ms ease-in, transform 500ms ease-in,
+    filter 300ms ease-in;
+}
+
+
+
+
+
+
+
+
+

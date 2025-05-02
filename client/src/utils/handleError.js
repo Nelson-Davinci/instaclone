@@ -1,22 +1,33 @@
-import {toast } from "sonner";
+import { toast } from "sonner";
 
 const handleError = (error) => {
-    console.error(error);
-    if(error.message === "Network Error") {
-       return toast.error("Server is down, please try again in a moment", {
-            id: "Network-Error",
-        });
-    }
-    if(error) {
-        return toast.error(
-            error?.response?.data?.error ||
-            error?.response?.data?.message ||
-            error?.response?.data ||
-            error?.message ||
-            "An unexpected error has occurred",
-            {id: "response-error"}
-        );
-    }
+  console.error(error);
+
+  // JWT expired
+  if (error?.response?.data?.message === "jwt expired") {
+    toast.error("Session expired. Logging you out.", { id: "logout" });
+
+    setTimeout(() => {
+      window.location.href = "/auth/login";
+    }, 1500);
+
+    return;
+  }
+
+  // Network error
+  if (error?.message === "Network Error") {
+    return toast.error("Server is down. Please try again in a moment.", {
+      id: "Network Error",
+    });
+  }
+
+  // Generic error fallback
+  const message =
+    error?.response?.data?.message ||
+    error?.message ||
+    "Something went wrong";
+
+  toast.error(message);
 };
 
-export default handleError; 
+export default handleError;

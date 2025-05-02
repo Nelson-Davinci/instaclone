@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 
 // we create the store
 export const AuthContext = createContext({});
+export const PostContext = createContext({});
 // we are using the useContext
 
 // we give the store a name we call in order to use it.
@@ -14,4 +15,11 @@ export const useAuth = () => {
   return authStore;
 };
 
+export const usePosts = () => {
+  const postStore = useContext(PostContext);
+  if (postStore === undefined) {
+    throw new Error("usePosts must be defined within a PostProvider");
+  }
+  return postStore;
+};
 // for you to use the createContext and useContext, we need to set it up, which is what we are doing

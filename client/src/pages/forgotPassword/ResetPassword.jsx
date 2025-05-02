@@ -59,7 +59,7 @@ export default function ResetPassword() {
         {/* to reset password */}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="md:max-w-[400px] mx-auto mt-10 ">
+          <div classNam e="md:max-w-[400px] mx-auto mt-10 ">
             <div className="mb-4 relative">
               <label className="floating-label">
                 <span>New Password</span>

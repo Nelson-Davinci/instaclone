@@ -17,5 +17,3 @@ export default function useLocalStorage(key, defaultValue) {
 
   return [memoizedState, setState];
 }
-
-// the avbe is to send and retrive data and it was pasted from dummjson work
