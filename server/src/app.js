@@ -2,8 +2,9 @@ import express, { json } from "express"; //middleware in express i.e json
 import createHttpError, { isHttpError } from "http-errors";
 import cors from "cors"; //for handling cross-origin requests
 import morgan from "morgan"; //for logging requests
-import postRoutes from "./routes/post.js"; //importing our post routes
+import { cacheMiddleware } from "./middleware/cache.js"; //for caching responses
 // import routes
+import postRoutes from "./routes/post.js"; //importing our post routes
 import userRoutes from "./routes/user.js";
 import commentRoutes from "./routes/comment.js";
 
@@ -19,6 +20,15 @@ app.use(morgan("dev")); //logging requests to the console
 app.use(json({ limit: "25mb" })); //parses requests to client side in json body format
 app.use(express.urlencoded({ extended: true }));
 app.disable("x-powered-by");
+
+//home server
+app.get("/", (req, res) => {
+  res.send("Welcome to Instashot API");
+});
+
+app.get("/user", cacheMiddleware("user", 600), (req, res) => {
+  res.send("User data cached successfully");
+});
 
 // api
 app.use("/api/auth", userRoutes);

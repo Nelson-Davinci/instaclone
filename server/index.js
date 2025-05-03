@@ -21,3 +21,5 @@ function startServer() {
     console.log(`Server is connected to port ${port}`);
   });
 }
+
+export default startServer;
